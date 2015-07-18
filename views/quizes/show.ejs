@@ -8,8 +8,8 @@
 
 	<body>
 		<h2>Quiz: el juego de las preguntas</h2>-->
-		<form method="get" action="/quizes/answer">
-			<p>pregunta: <%=pregunta%></p>
+		<form method="get" action="/quizes/<%=quiz.id%>/answer">
+			<p>pregunta: <%=quiz.pregunta%></p>
 			<input type="text" name="respuesta" placeholder="Responda aquí">
 			<input type="submit" value="Enviar">
 		</form>

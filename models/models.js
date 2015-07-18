@@ -35,8 +35,13 @@ sequelize.sync().success(function(){
 	Quiz.count().success(function(count){
 		if(count === 0){//la tabla se inicializa solo si está vacia
 			Quiz.create({
-				pregunta:'¿Capital de Itaia?',
+				pregunta:'¿Capital de Italia?',
 				respuesta:'Roma'
+			}).success(function(){console.log('Base de datos inicializada')});
+
+			Quiz.create({
+				pregunta:'¿Capital de Portugal?',
+				respuesta:'Lisboa'
 			}).success(function(){console.log('Base de datos inicializada')});
 		};
 	});
