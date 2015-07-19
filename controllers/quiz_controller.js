@@ -28,7 +28,18 @@ exports.answer = function (req, res){
 
 //get /quiz
 exports.index = function(req, res){
-	models.Quiz.findAll().then(function(quizes){
-		res.render('quizes/index.ejs',{quizes: quizes});
-	})
+	var aux = req.query.search;
+	if(aux){
+		aux = aux.replace(/^/,'%');
+		aux = aux.replace(/$/,'%');
+		aux = aux.replace(/\s/g,'%');
+		console.log('se envio: '+aux);
+		models.Quiz.findAll({where:["pregunta like ?",aux]}).then(function(quizes){
+			res.render('quizes/index.ejs',{quizes: quizes});
+		})
+	}else{
+		models.Quiz.findAll().then(function(quizes){
+			res.render('quizes/index.ejs',{quizes: quizes});
+		})
+	}
 };
