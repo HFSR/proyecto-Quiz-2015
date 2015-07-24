@@ -23,10 +23,10 @@
   		<section class="main" id="s1">
         <% if(errors.length){ %>
           <span id="ErrorMsgs">
-            Corregir Errores:<br>
-            <% for(var i in erros){ %>
-            <span><%= erros[i].message %></span>
-            <br>
+            Corregir Errores:<br><br>
+            <% for(var i in errors){ %>
+            <span><%= errors[i].message %></span>
+            <br><br>
             <%}%>
           </span>
         <%}%>
