@@ -14,7 +14,7 @@ exports.load = function(req, res, next, quizId){
 
 //get /quizes/:id
 exports.show = function (req, res){
-	res.render('quizes/show',{quiz: req.quiz});
+	res.render('quizes/show',{quiz: req.quiz, errors: []});
 };
 
 //get /quizes/:id/answer
@@ -23,7 +23,7 @@ exports.answer = function (req, res){
 	if(req.query.respuesta === req.quiz.respuesta){
 		resultado='Correcto';
 	}
-	res.render('quizes/answer',{quiz: req.quiz, respuesta: resultado});
+	res.render('quizes/answer',{quiz: req.quiz, respuesta: resultado, errors: []});
 };
 
 //get /quiz
@@ -35,11 +35,11 @@ exports.index = function(req, res){
 		aux = aux.replace(/\s/g,'%');
 		console.log('se envio: '+aux);
 		models.Quiz.findAll({where:["pregunta like ?",aux]}).then(function(quizes){
-			res.render('quizes/index.ejs',{quizes: quizes});
+			res.render('quizes/index.ejs',{quizes: quizes, errors: []});
 		})
 	}else{
 		models.Quiz.findAll().then(function(quizes){
-			res.render('quizes/index.ejs',{quizes: quizes});
+			res.render('quizes/index.ejs',{quizes: quizes, errors: []});
 		})
 	}
 };
@@ -48,15 +48,25 @@ exports.index = function(req, res){
 exports.new = function(req, res){
 							//crea el objeto quiz
 	var quiz = models.Quiz.build({pregunta:"",respuesta:""});
-	res.render('quizes/new', {quiz:quiz});
+	res.render('quizes/new', {quiz:quiz, errors: []});
 };
 
 //post /quiz/create
 exports.create = function(req, res){
 	var quiz = models.Quiz.build(req.body.quiz);
 
-	//guarda en la BD los campos respuesta y pregunta de quiz
-	quiz.save({fields:["pregunta", "respuesta"]}).then(function(){
-		res.redirect('/quizes'); //redirección HTTP (URL relativo) lista de preguntas
-	})
+	quiz
+	.validate()
+	.then(
+		function(err){
+			if(err){
+				res.render('quizes/new', {quiz:quiz, errors: err.errors});
+			}else{
+				//guarda en la BD los campos respuesta y pregunta de quiz
+				quiz
+				.save({fields:["pregunta", "respuesta"]})
+				.then(function(){res.redirect('/quizes');})//redirección HTTP (URL relativo) lista de preguntas
+			}
+		}
+	);	
 };
