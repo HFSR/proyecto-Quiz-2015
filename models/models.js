@@ -35,13 +35,15 @@ sequelize.sync().success(function(){
 	Quiz.count().success(function(count){
 		if(count === 0){//la tabla se inicializa solo si está vacia
 			Quiz.create({
-				pregunta:'¿Capital de Italia?',
-				respuesta:'Roma'
+				pregunta:'Estrella más cercana al sol?',
+				respuesta:'Próxima Centauri',
+				tema:'Ciencia'
 			}).success(function(){console.log('Base de datos inicializada')});
 
 			Quiz.create({
-				pregunta:'¿Capital de Portugal?',
-				respuesta:'Lisboa'
+				pregunta:'Estrella más brillante del firmamento?',
+				respuesta:'Sirio',
+				tema:'Ciencia'
 			}).success(function(){console.log('Base de datos inicializada')});
 		};
 	});
