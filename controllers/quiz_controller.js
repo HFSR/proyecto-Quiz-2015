@@ -98,3 +98,11 @@ exports.update = function(req, res){
 		}
 	);
 };
+
+//delete /quizes/:id
+exports.destroy = function(req, res){
+	var quiz = req.quiz;
+	quiz.destroy().then(function(){
+		res.redirect('/quizes');
+	}).catch(function(error){next(error)});
+};
